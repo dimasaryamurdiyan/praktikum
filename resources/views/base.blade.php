@@ -52,6 +52,12 @@
 					<li><a href="{{ route('mahasiswa.create') }}">Tambah</a></li>
 				</ul>
             </li>
+            <li>
+                <a href="/upload">File</a>
+                <ul class="main-nav">
+                    <li><a href="{{ route('upload.create') }}">Tambah</a></li>
+                </ul>
+            </li>
 			<li>
                 <a href="{{ route('user.index') }}">User</a>
 				<ul class="main-nav">
