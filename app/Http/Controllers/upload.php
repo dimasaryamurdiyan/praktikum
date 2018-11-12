@@ -66,7 +66,8 @@ class upload extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = model_upload::findOrFail($id);
+        return view('file_edit',compact('data'));
     }
 
     /**
@@ -78,7 +79,20 @@ class upload extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = model_upload::findOrFail($id);
+        $data->nama = $request->input('nama');
+        if(empty($request->file('file'))){
+            $data->file = $data->file;
+        }else{
+            unlink('uploads/file/'.$data->file);
+            $file = $request->file('file');
+            $ext=$file->getClientOriginalExtension();
+            $newName = rand(100000,1001238912).".".$ext;
+            $file->move('uploads/file',$newName);
+            $data->file = $newName;
+        }
+        $data->save;
+        return redirect()->route('upload.index')->with('alert-success','Data berhasil diubah!');
     }
 
     /**
@@ -89,6 +103,10 @@ class upload extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = model_upload::findOrFail($id);
+        if($data->delete()){
+            unlink('uploads/file/'.$data->file);
+        }
+        return redirect()->route('upload.index')->with('alert-success','Data berhasi dihapus!');
     }
 }
